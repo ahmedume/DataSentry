@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: datasentry
+      POSTGRES_PASSWORD: datasentry
+      POSTGRES_DB: datasentry
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql://datasentry:datasentry@postgres:5432/datasentry
+      REDIS_URL: redis://redis:6379/0
+      CELERY_EAGER: "false"
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      STORAGE_ROOT: /data
+      MAX_UPLOAD_MB: "200"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - data:/data
+
+  celery:
+    build:
+      context: ./backend
+    command: celery -A app.workers.celery_app.celery_app worker --loglevel=info
+    environment:
+      DATABASE_URL: postgresql://datasentry:datasentry@postgres:5432/datasentry
+      REDIS_URL: redis://redis:6379/0
+      CELERY_EAGER: "false"
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      STORAGE_ROOT: /data
+    depends_on:
+      - postgres
+      - redis
+      - backend
+    volumes:
+      - ./backend:/app
+      - data:/data
+
+  beat:
+    build:
+      context: ./backend
+    command: celery -A app.workers.celery_app.celery_app beat --loglevel=info
+    environment:
+      DATABASE_URL: postgresql://datasentry:datasentry@postgres:5432/datasentry
+      REDIS_URL: redis://redis:6379/0
+      CELERY_EAGER: "false"
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      STORAGE_ROOT: /data
+    depends_on:
+      - postgres
+      - redis
+      - backend
+    volumes:
+      - ./backend:/app
+      - data:/data
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  data:
