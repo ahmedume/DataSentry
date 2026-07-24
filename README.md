@@ -122,172 +122,84 @@ datasentry/
 │   │   ├── main.py                    # FastAPI app, lifespan, CORS, router wiring
 │   │   │
 │   │   ├── api/v1/                    # 20 REST routers
-│   │   │   ├── alerts.py              # Rule-based alerting CRUD + evaluation
-│   │   │   ├── annotations.py         # Dataset/column annotations
-│   │   │   ├── audit.py               # Immutable audit log queries
-│   │   │   ├── auth.py                # Register, login, API key management
-│   │   │   ├── charts.py              # Histogram, bar chart, missingness endpoints
-│   │   │   ├── cleaning.py            # Recommendations + apply transforms + diff
-│   │   │   ├── connectors.py          # Data source connectors CRUD
-│   │   │   ├── datasets.py            # Upload, list, get, status
-│   │   │   ├── drift.py               # Snapshots, PSI/KS/TVD comparison
-│   │   │   ├── insights.py            # AI column insights (trigger + get)
-│   │   │   ├── models_v4.py           # Model registry, promote, predict
-│   │   │   ├── monitoring.py          # Monitor schedules + runs
-│   │   │   ├── profiling.py           # Column profiling results
-│   │   │   ├── public.py              # API-key-authenticated public endpoints
-│   │   │   ├── reports.py             # PDF report generation + download
-│   │   │   ├── teams.py               # Team CRUD + member management
-│   │   │   ├── training.py            # ML training pipeline
-│   │   │   ├── usage.py               # API usage metering
-│   │   │   └── webhooks.py            # Outbound webhooks CRUD + toggle
+│   │   │   ├── alerts.py
+│   │   │   ├── annotations.py
+│   │   │   ├── audit.py
+│   │   │   ├── auth.py
+│   │   │   ├── charts.py
+│   │   │   ├── cleaning.py
+│   │   │   ├── connectors.py
+│   │   │   ├── datasets.py
+│   │   │   ├── drift.py
+│   │   │   ├── insights.py
+│   │   │   ├── models_v4.py
+│   │   │   ├── monitoring.py
+│   │   │   ├── profiling.py
+│   │   │   ├── public.py
+│   │   │   ├── reports.py
+│   │   │   ├── teams.py
+│   │   │   ├── training.py
+│   │   │   ├── usage.py
+│   │   │   └── webhooks.py
 │   │   │
 │   │   ├── core/
-│   │   │   ├── config.py              # Pydantic Settings (env-driven config)
-│   │   │   ├── security.py            # Password hashing (scrypt), JWT, API keys
-│   │   │   ├── deps.py                # FastAPI dependencies (auth, access control)
-│   │   │   ├── rbac.py                # Team role-based access (viewer→owner)
-│   │   │   ├── audit.py               # record_audit() helper
-│   │   │   ├── middleware.py          # UsageMiddleware (per-endpoint daily counters)
-│   │   │   ├── storage.py             # Local filesystem adapter (swappable to S3)
-│   │   │   └── ids.py                 # UUID parsing utilities
+│   │   │   ├── config.py
+│   │   │   ├── security.py
+│   │   │   ├── deps.py
+│   │   │   ├── rbac.py
+│   │   │   ├── audit.py
+│   │   │   ├── middleware.py
+│   │   │   ├── storage.py
+│   │   │   └── ids.py
 │   │   │
 │   │   ├── db/
-│   │   │   ├── session.py             # SQLAlchemy engine, SessionLocal, Base, init_db()
+│   │   │   ├── session.py
 │   │   │   └── models/                # 19 SQLAlchemy ORM models
-│   │   │       ├── user.py            # Users + teams relationship
-│   │   │       ├── dataset.py         # Dataset records
-│   │   │       ├── profiling_result.py
-│   │   │       ├── ai_insight.py
-│   │   │       ├── cleaning_recommendation.py
-│   │   │       ├── cleaned_dataset.py
-│   │   │       ├── report.py
-│   │   │       ├── api_key.py
-│   │   │       ├── connector.py
-│   │   │       ├── drift.py           # Drift snapshots
-│   │   │       ├── monitoring.py      # Monitor schedules + runs
-│   │   │       ├── training.py        # Training jobs
-│   │   │       ├── alerts.py          # Alert rules + events
-│   │   │       ├── v34.py             # Teams, annotations, webhooks, model registry, audit, usage
-│   │   │       └── __init__.py
 │   │   │
 │   │   ├── schemas/                   # Pydantic v2 request/response models
-│   │   │   ├── auth.py
-│   │   │   ├── dataset.py
-│   │   │   ├── profiling.py
-│   │   │   ├── insights.py
-│   │   │   ├── cleaning.py
-│   │   │   ├── charts.py
-│   │   │   ├── reports.py
-│   │   │   ├── connectors.py
-│   │   │   ├── drift.py
-│   │   │   ├── training.py
-│   │   │   ├── monitoring.py
-│   │   │   ├── alerts.py
-│   │   │   ├── v34.py
-│   │   │   ├── common.py
-│   │   │   └── __init__.py
 │   │   │
 │   │   ├── services/                  # Business logic (14 modules)
-│   │   │   ├── profiler.py            # Pandas column profiling pipeline
-│   │   │   ├── quality_checks.py      # Missing%, outliers (IQR), duplicates, cardinality
-│   │   │   ├── chart_aggregator.py    # Histogram binning, bar charts, missingness
-│   │   │   ├── ai_analyst.py          # LLM + heuristic column explanation generator
-│   │   │   ├── ai_cleaner.py          # LLM + heuristic cleaning recommendation engine
-│   │   │   ├── cleaning_engine.py     # Transform application (impute, drop, cap, coerce)
-│   │   │   ├── report_builder.py      # PDF generation (reportlab + matplotlib)
-│   │   │   ├── connectors.py          # SourceConnector abstraction (local, postgres, s3)
-│   │   │   ├── drift.py               # PSI, KS, TVD drift metrics (pure numpy/pandas)
-│   │   │   ├── training.py            # sklearn RandomForest training pipeline
-│   │   │   ├── alerts.py              # Alert rule evaluation + dispatch (Slack, email)
-│   │   │   ├── webhooks.py            # Event firing with HMAC-SHA256 signatures
-│   │   │   └── llm.py                 # Gemini + Groq API client with JSON extraction
 │   │   │
 │   │   └── workers/
-│   │       ├── celery_app.py          # Celery application + beat schedule config
-│   │       └── tasks.py               # Async tasks: profile, insights, cleaning, report,
-│   │                                  #                ingest, train, monitor
+│   │       ├── celery_app.py
+│   │       └── tasks.py
 │   │
 │   ├── migrations/                    # Alembic migrations
 │   │   ├── env.py
 │   │   ├── script.py.mako
-│   │   └── versions/                  # Migration history
+│   │   └── versions/
 │   │
-│   ├── tests/                         # 40+ tests (pytest, offline-safe, no LLM key needed)
-│   │   ├── conftest.py                # Engine fixture (SQLite with env overrides)
-│   │   ├── test_api.py                # v1 end-to-end flow
-│   │   ├── test_v2.py                 # Auth, drift, connectors, training, public API
-│   │   ├── test_v34.py                # Teams, annotations, webhooks, model registry, audit, usage
-│   │   ├── test_profiler.py           # Profiling service unit tests
-│   │   ├── test_quality_checks.py     # Quality check service unit tests
-│   │   ├── test_ai_cleaner.py         # AI cleaning recommendation unit tests
-│   │   └── test_cleaning_engine.py    # Cleaning transform application unit tests
+│   ├── tests/                         # 40+ tests (pytest, offline-safe)
 │   │
-│   ├── .env.example                   # Environment template (committed)
-│   ├── .env                           # Local config (git-ignored)
+│   ├── .env.example
+│   ├── .env                           # (git-ignored)
+│   ├── .python-version
 │   ├── requirements.txt
+│   ├── pyproject.toml
+│   ├── uv.lock
 │   ├── alembic.ini
 │   └── Dockerfile
 │
 ├── frontend/
 │   ├── app/                           # 12 Next.js 14 route groups (App Router)
-│   │   ├── layout.tsx                 # Root layout + font loading
-│   │   ├── page.tsx                   # Cinematic landing page with WebGL + CSV upload
-│   │   ├── globals.css                # Design system tokens + component styles
-│   │   ├── login/page.tsx
-│   │   ├── register/page.tsx
-│   │   ├── datasets/
-│   │   │   ├── page.tsx               # Dataset list + job status polling
-│   │   │   └── [id]/page.tsx          # Dataset detail (7 tabs: overview, quality,
-│   │   │                              #   insights, cleaning, charts, report, annotations)
-│   │   ├── connectors/page.tsx
-│   │   ├── monitor/page.tsx
-│   │   ├── training/page.tsx
-│   │   ├── teams/page.tsx
-│   │   ├── webhooks/page.tsx
-│   │   ├── models/page.tsx
-│   │   ├── audit/page.tsx
-│   │   └── usage/page.tsx
-│   │
 │   ├── components/                    # 20+ React components
-│   │   ├── Nav.tsx                    # Sticky navigation bar
-│   │   ├── Footer.tsx
-│   │   ├── CinematicCanvas.tsx        # Three.js WebGL canvas (living schema visualization)
-│   │   ├── UploadDropzone.tsx         # Drag-and-drop CSV upload
-│   │   ├── RequireAuth.tsx            # Auth gate wrapper
-│   │   ├── MagneticButton.tsx         # Hover-reactive button (Framer Motion)
-│   │   ├── Reveal.tsx                 # Scroll-triggered reveal animation
-│   │   ├── CountUp.tsx                # Animated number counter
-│   │   ├── HistogramChart.tsx         # Chart.js numeric histogram
-│   │   ├── CategoricalBarChart.tsx    # Chart.js categorical bar chart
-│   │   ├── AIInsightCard.tsx          # LLM insight display
-│   │   ├── CleaningRecommendationCard.tsx
-│   │   ├── MissingValueTable.tsx
-│   │   ├── OutlierTable.tsx
-│   │   ├── JobStatusPoller.tsx        # Poll dataset status until READY
-│   │   ├── DatasetListPanel.tsx
-│   │   ├── StatCard.tsx
-│   │   └── LivingSchema.tsx
-│   │
-│   ├── lib/
-│   │   ├── api.ts                     # Authenticated HTTP client (all endpoints)
-│   │   ├── auth.ts                    # Token storage + helpers
-│   │   ├── types.ts                   # TypeScript interfaces (all API models)
-│   │   ├── config.ts                  # Client-side config
-│   │   ├── status.ts                  # Dataset status helpers
-│   │   └── scrollStore.ts             # Framer Motion scroll progress store
-│   │
+│   ├── lib/                           # API client, auth, types, config
 │   ├── next.config.js
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
 │   ├── postcss.config.js
 │   └── package.json
 │
+├── docs/
+│   ├── forthedev.md                   # Developer reference (run, debug, deploy)
+│   └── DataSentry_Codebase_Architecture.docx
+│
 ├── docker-compose.yml                 # 6-service orchestration
-├── Dockerfile.frontend                # (referenced by compose)
+├── Dockerfile.frontend
 ├── .gitignore
-├── run_backend.bat                    # Quick-launch backend script
-├── run_frontend.bat                   # Quick-launch frontend script
+├── LICENSE
+├── run_backend.bat                    # Quick-launch backend (visible window, --reload)
+├── run_frontend.bat                   # Quick-launch frontend (visible window)
 └── README.md
 ```
 
@@ -540,6 +452,32 @@ The beat schedule runs `run_due_monitors` every 60 seconds, checking all enabled
 | **TVD** (Total Variation Distance) | Categorical | 0–1 | Maximum category proportion difference |
 
 All metrics are computed with pure numpy/pandas — no scipy dependency.
+
+---
+
+## Cleanup / Reset
+
+Reset the entire platform to a clean state (deletes all data, DB, cache, logs):
+
+```bash
+# Stop servers (Ctrl+C in each window, or)
+taskkill /F /IM uvicorn.exe 2>nul
+taskkill /F /IM node.exe 2>nul
+
+# Delete disposable files
+rmdir /s /q backend\app\__pycache__ 2>nul
+rmdir /s /q backend\tests\__pycache__ 2>nul
+rmdir /s /q backend\migrations\__pycache__ 2>nul
+rmdir /s /q frontend\.next 2>nul
+del backend\backend.log 2>nul
+del frontend\frontend.log 2>nul
+del backend\datasentry.db 2>nul
+rmdir /s /q backend\.data 2>nul
+```
+
+The DB and `.data/` storage are auto-created on next startup — no setup needed.
+
+Also update `README.md` to reflect current state after significant changes.
 
 ---
 

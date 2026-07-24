@@ -1,11 +1,7 @@
-# Root-level data files
-dataset/
-*.docx
-start.txt
-
 # Python
 __pycache__/
 *.py[cod]
+backend/.venv/
 .venv/
 venv/
 *.egg-info/
@@ -17,7 +13,7 @@ venv/
 !.env.example
 
 # Data & databases
-.data/
+backend/.data/
 *.db
 *.sqlite3
 
@@ -29,6 +25,9 @@ dist/
 build/
 *.tsbuildinfo
 *.log
+
+# Docs (generated)
+*.docx
 
 # OS
 .DS_Store

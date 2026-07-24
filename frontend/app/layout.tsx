@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${bricolage.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <div id="top" />
         {children}
       </body>

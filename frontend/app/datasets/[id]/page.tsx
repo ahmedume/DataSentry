@@ -224,6 +224,11 @@ function DatasetInner() {
                       /* still applying */
                     }
                   }
+                } catch (e) {
+                  if (e instanceof Error && e.message.includes("token")) {
+                    alert("Session expired. Please log in again.");
+                    window.location.href = "/login";
+                  }
                 } finally {
                   setCleaningBusy(false);
                 }
