@@ -9,7 +9,7 @@ DataSentry turns raw CSV uploads into a living, inspectable schema. It profiles 
 ## Features
 
 | Capability | Description |
-|---|---|
+|---|---|---|
 | **Instant Profiling** | Column-level statistics: type inference, null rates, distributions, cardinality, skew, outliers — generated the moment a file lands |
 | **Quality Audit** | 12 automated quality checks: missing values, duplicates, type mismatches, outliers (IQR), high cardinality, correlation warnings |
 | **AI-Powered Insights** | LLM-backed column explanations (Gemini or Groq) with heuristic fallback — explains what each column means and flags risks |
@@ -24,6 +24,26 @@ DataSentry turns raw CSV uploads into a living, inspectable schema. It profiles 
 | **Webhooks** | Outbound event webhooks with HMAC-SHA256 signed payloads |
 | **Audit Logging** | Immutable audit trail for all operations |
 | **API Key Auth** | Programmatic access with scoped API keys (SHA-256 hashed) |
+
+---
+
+## Screenshots
+
+| Landing page | Dataset Overview (profiling results) |
+|---|---|
+| ![Landing](docs/screenshots/01-landing.png) | ![Overview](docs/screenshots/03-overview.png) |
+
+| Quality audit (missing values & outliers) | AI-powered insights |
+|---|---|
+| ![Quality](docs/screenshots/04-quality.png) | ![Insights](docs/screenshots/05-insights.png) |
+
+| Interactive charts (histograms, bar charts) | Summary dashboard |
+|---|---|
+| ![Charts](docs/screenshots/07-charts.png) | ![Summary](docs/screenshots/10-summary.png) |
+
+| API documentation (Swagger UI) |
+|---|
+| ![Swagger](docs/screenshots/19-swagger.png) |
 
 ---
 
